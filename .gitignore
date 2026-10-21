@@ -1,12 +1,12 @@
-# Data is never committed (each component keeps it in <component>/data/)
+# Raw + interim data are NOT committed (8 GB, dataset licences) - share via Drive, see README.
+# Processed (cleaned, training-ready) data IS committed (private repo, team decision 2026-10-22).
 **/data/raw/**
 **/data/interim/**
-**/data/processed/**
 !**/data/**/.gitkeep
 scripts/download_log*.csv
 
-# Databases (contain user / run data - rebuilt by the seed scripts)
-*/database/*.db
+# Databases: c2.db / c3.db / c1_seed.db are committed. c1.db holds real user accounts -> never committed.
+charging_scheduling/database/c1.db
 */database/*.db-journal
 
 # Frontends

@@ -1,14 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-
 # Windows scripts must keep CRLF line endings (cmd 'goto' labels break with LF)
 *.bat text eol=crlf
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
-
 # Binary files - never change them
 *.png binary
 *.jpg binary
 *.pdf binary
 *.parquet binary
 *.xlsx binary
+route_recommendation/data/processed/bmw_sim_runs.parquet filter=lfs diff=lfs merge=lfs -text

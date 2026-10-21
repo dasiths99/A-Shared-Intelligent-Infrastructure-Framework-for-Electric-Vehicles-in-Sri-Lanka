@@ -1,0 +1,6 @@
+vehicle,parameter,value,note,source
+BMW i3 (60 Ah),crr,0.01643,"median of TUM simulation while moving (range 0.0111-0.0225, speed-dependent)",TUM BMW i3 simulation
+BMW i3 (60 Ah),rotating_mass_equiv_kg,77.78814262,equivalent mass of rotating parts (not vehicle mass),TUM BMW i3 simulation
+BMW i3 (60 Ah),mass_kg,,NOT in data - take from BMW spec sheet,-
+BMW i3 (60 Ah),cda_m2,,NOT in data - take from spec sheet / literature,-
+Nissan Leaf 2013 (VED EV),weight_class_lb,3500.0,"VED 'generalized weight' class, not exact mass",VED static data

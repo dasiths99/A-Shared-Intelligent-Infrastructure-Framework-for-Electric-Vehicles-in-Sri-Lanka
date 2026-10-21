@@ -18,11 +18,18 @@ Needs **Python 3.11** and **Node.js LTS**. In the component's folder, double-cli
 2. `run_cX.bat` – starts backend + frontend and opens the browser
 3. `stop_cX.bat` – stops it
 
-## Data is NOT in this repository
+## What data is in this repository
 
-Raw / processed datasets, databases, `.venv` and `node_modules` are excluded (`.gitignore`) – size, licences and
-privacy. Download the datasets with `scripts/download_datasets.py` and the manual steps in `docs/MANUAL_DOWNLOADS.md`,
-then `setup_cX.bat` rebuilds everything. API keys go in a local `.env` file (never committed).
+| Included | Not included |
+| --- | --- |
+| `*/data/processed/` – cleaned, training-ready data (~330 MB; `bmw_sim_runs.parquet` via **Git LFS**) | `*/data/raw/` and `*/data/interim/` (~9 GB – size + dataset licences) |
+| `station_siting/database/c2.db`, `route_recommendation/database/c3.db` | `charging_scheduling/database/c1.db` (real user accounts – privacy rule) |
+| `charging_scheduling/database/c1_seed.db` (vehicle models only, no users) – copied to `c1.db` on first start | `.venv`, `node_modules`, `.env`, `*.rar` |
+
+So after cloning, the apps and notebooks work without downloading anything. Install **Git LFS** before cloning
+(`git lfs install`). Raw data is shared separately (team drive) or re-downloaded with `scripts/download_datasets.py`
++ `docs/MANUAL_DOWNLOADS.md`. API keys go in a local `.env` file (never committed).
+Raw-data licences still apply to the processed files (ACN, RECON-SL, BMW i3, Utrecht 4TU non-commercial) – keep the repository **private**.
 
 ## Documents
 

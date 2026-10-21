@@ -59,6 +59,7 @@ Issues found in the TAF and original proposals:
 
 | Date | Decision | Reason | Supervisor OK? |
 | --- | --- | --- | --- |
+| 22 Oct 2026 | **Changes golden rule 8 ("never commit data") for the private GitHub repo:** processed data (~330 MB, files ≥ 90 MB via Git LFS) + `c2.db`, `c3.db`, `c1_seed.db` are committed. Raw/interim data (~9 GB) and `c1.db` (real user accounts) stay out | Teammates can run apps/notebooks right after cloning; raw data too big for GitHub and licence-restricted; privacy rule for login data | **ask supervisor** (dataset licences) |
 | 18 Oct 2026 | Each component (`charging_scheduling/`, `station_siting/`, `route_recommendation/`) is a self-contained folder with its own `data/`, `tests/`, `notebooks/`, `results/`; data used by 2+ components in `shared/data/raw/`; docs moved to `docs/` | Team develops C1, C2, C3 separately; one owner per folder | n/a (internal) |
 | 19 Oct 2026 | Each component gets its own **backend (FastAPI) + database (SQLite, PostgreSQL-ready) + frontend (React + Vite)** with a clearly different design; ports C1 8001/5181, C2 8002/5182, C3 8003/5183. Model code moved from notebooks into packages | Team develops parts separately; Docker/PostgreSQL/Flutter not installed; web apps run now | n/a |
 | 19 Oct 2026 | C3 app routes on its **own OSM road graph** (643k nodes, DEM elevation, shortest / fastest / energy-aware Dijkstra) instead of OSRM | No Docker for OSRM; energy-aware routing needs elevation on edges anyway | n/a |

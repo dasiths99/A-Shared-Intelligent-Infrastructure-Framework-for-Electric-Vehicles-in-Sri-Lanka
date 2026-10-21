@@ -1,0 +1,28 @@
+vehicle_class,fuel,2019,2020,2021,2022,2023,is_ev,is_hybrid
+Motor cars,Diesel,361,273,182,297,560,False,False
+Motor cars,Petrol,30107,19021,2990,1093,1080,False,False
+Motor cars,Electric,102,77,41,17,124,True,False
+Motor cars,Diesel/Electric,5,9,7,0,3,False,True
+Motor cars,Petrol/Electric,7658,1641,275,82,49,False,True
+Motor Tricycles,Diesel,267,78,41,15,16,False,False
+Motor Tricycles,Petrol,14104,6679,2034,14,5,False,False
+Motor Tricycles,Electric,7,0,3,0,1,True,False
+Motor Tricycles,Petrol/Electric,0,0,0,0,14,False,True
+Motor Tricycles Van,Diesel,918,373,7,5,16,False,False
+Motor Tricycles Van,Petrol,194,20,8,1,7,False,False
+Motor Tricycles Van,Electric,0,0,0,1,1,True,False
+Quadricycle,Petrol,1318,470,0,0,0,False,False
+Motor Home,Electric,1,0,3,0,0,True,False
+Buses,Diesel,1613,578,281,404,685,False,False
+Buses,Petrol,0,0,0,0,0,False,False
+Motor Cycles,Petrol,283635,151372,7779,8326,18136,False,False
+Motor Cycles,Electric,643,261,229,728,2054,True,False
+Motor Cycles,Petrol/Electric,23,1,3,6,10,False,True
+Dual Purpose Vehicles,Diesel,1352,1561,324,47,25,False,False
+Dual Purpose Vehicles,Petrol,5774,4057,249,44,56,False,False
+Dual Purpose Vehicles,Electric,4,2,0,0,3,True,False
+Dual Purpose Vehicles,Petrol/Electric,0,0,0,0,0,False,True
+Special Purpose,Diesel,773,645,1088,446,137,False,False
+Special Purpose,Petrol,8,4,5,12,4,False,False
+Special Purpose,Electric,0,0,0,0,0,True,False
+Special Purpose,Diesel/Electric,31,14,49,10,10,False,True
