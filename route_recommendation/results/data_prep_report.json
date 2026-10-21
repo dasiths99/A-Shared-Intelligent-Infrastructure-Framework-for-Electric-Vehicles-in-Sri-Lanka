@@ -1,0 +1,199 @@
+{
+  "created_utc": "2026-10-19T08:46:19+00:00",
+  "outputs": {
+    "bmw_trips_1hz": {
+      "file": "processed/bmw_trips_1hz.parquet",
+      "rows": 105553,
+      "mb": 7.02
+    },
+    "bmw_trip_summary": {
+      "file": "processed/bmw_trip_summary.parquet",
+      "rows": 70,
+      "mb": 0.02
+    },
+    "bmw_segments_200m": {
+      "file": "processed/bmw_segments_200m.parquet",
+      "rows": 6792,
+      "mb": 0.86
+    },
+    "bmw_sim_runs": {
+      "file": "processed/bmw_sim_runs.parquet",
+      "rows": 917281,
+      "mb": 203.89
+    },
+    "weather_hourly": {
+      "file": "processed/weather_hourly.parquet",
+      "rows": 210432,
+      "mb": 0.98
+    },
+    "dem_tiles_index": {
+      "file": "processed/dem_tiles_index.parquet",
+      "rows": 12,
+      "mb": 0.01
+    },
+    "vehicle_specs_openev": {
+      "file": "processed/vehicle_specs_openev.parquet",
+      "rows": 109,
+      "mb": 0.01
+    },
+    "vehicle_params_from_data": {
+      "file": "processed/vehicle_params_from_data.csv",
+      "rows": 5,
+      "mb": 0.0
+    },
+    "eved_ev_phev_rows": {
+      "file": "interim/eved_ev_phev_rows.parquet",
+      "rows": 3718706,
+      "mb": 70.64
+    },
+    "eved_trips": {
+      "file": "processed/eved_trips.parquet",
+      "rows": 4107,
+      "mb": 0.13
+    },
+    "eved_ev_trips_1hz": {
+      "file": "processed/eved_ev_trips_1hz.parquet",
+      "rows": 2135189,
+      "mb": 70.34
+    },
+    "eved_segments_200m": {
+      "file": "processed/eved_segments_200m.parquet",
+      "rows": 114889,
+      "mb": 12.67
+    }
+  },
+  "cleaning": {
+    "bmw_trips": {
+      "rows_10hz": 1094793,
+      "charging_removed_s": 3953.0,
+      "trips_with_charging": [
+        "B04",
+        "B09"
+      ],
+      "rows_no_battery_data": 0,
+      "soc_glitch_rows": 1,
+      "soc_missing_pct_mean_per_trip": 1.29,
+      "trips_with_soc_gaps_over_10pct": [
+        "B07",
+        "B28",
+        "B34"
+      ]
+    },
+    "weather": {
+      "Anuradhapura": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Colombo": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Galle": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Jaffna": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Kandy": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Kegalle": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "Kurunegala": {
+        "rows_in": 26304,
+        "removed": 0
+      },
+      "NuwaraEliya": {
+        "rows_in": 26304,
+        "removed": 0
+      }
+    },
+    "eved": {
+      "weeks": 54,
+      "rows_scanned": 22436808,
+      "rows_ev_phev": 3719680,
+      "rows_in": 3719680,
+      "rows_no_battery_or_speed": 974,
+      "duplicate_rows": 0,
+      "impossible_power_rows": 0,
+      "rows_out": 3718706,
+      "rows_engine_on_pct": 67.0
+    }
+  },
+  "summary": {
+    "bmw": {
+      "trips": 70,
+      "km": 1357.8,
+      "kwh": 223.4,
+      "kwh_per_100km_by_season": {
+        "summer": 13.3,
+        "winter": 19.1
+      },
+      "segments": 6792,
+      "segments_with_gap": 1,
+      "split_trips": {
+        "summer": {
+          "test": 5,
+          "train": 22,
+          "val": 5
+        },
+        "winter": {
+          "test": 6,
+          "train": 27,
+          "val": 5
+        }
+      },
+      "split_segments": {
+        "train": 5019,
+        "test": 1034,
+        "val": 739
+      },
+      "grade_pct_p1_p99": [
+        -1.5,
+        1.37
+      ]
+    },
+    "bmw_sim": {
+      "runs": 24,
+      "rows": 917281
+    },
+    "weather_mean_temp_c": {
+      "Anuradhapura": 26.9,
+      "Colombo": 26.8,
+      "Galle": 26.5,
+      "Jaffna": 28.0,
+      "Kandy": 24.1,
+      "Kegalle": 26.0,
+      "Kurunegala": 26.0,
+      "NuwaraEliya": 15.6
+    },
+    "eved": {
+      "vehicles": 27,
+      "trips": 4107,
+      "trips_electric_only": 1483,
+      "segments": 114889,
+      "segments_electric_only": 37594,
+      "segments_electric_only_by_type": {
+        "PHEV": 25885,
+        "EV": 11709
+      },
+      "split_segments_electric_only": {
+        "train": 24127,
+        "val": 7124,
+        "test": 6343
+      },
+      "kwh_per_km_median_electric_only": 0.16
+    }
+  },
+  "notes": [
+    "BMW simulation = model output: use only for physics checks / parameters, never accuracy.",
+    "Open EV Data is from 2020 (no BYD/MG ZS 2023+); mass, CdA, Crr for Sri Lankan models must come from manufacturer spec sheets.",
+    "eVED time zone assumed America/Detroit; PHEV segments with engine running are flagged (electric_only = False) - exclude them from EV energy training."
+  ],
+  "split_rule": "BMW: time order within each season 70/15/15 (by trips); eVED: trip start time 70/15/15"
+}

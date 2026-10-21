@@ -1,0 +1,501 @@
+{
+  "run_id": "20261019T092728Z",
+  "seed": 42,
+  "config": {
+    "period_weights": {
+      "weekday_peak": {
+        "population": 0.4,
+        "traffic_proxy": 0.15,
+        "poi_office": 0.02,
+        "poi_education": 0.0,
+        "poi_health": 0.03,
+        "poi_food": 0.12,
+        "poi_entertainment": 0.06,
+        "poi_mall": 0.06,
+        "poi_supermarket": 0.06,
+        "poi_bank": 0.0,
+        "poi_worship": 0.02,
+        "poi_hotel": 0.04,
+        "poi_transport_hub": 0.02,
+        "commercial_share": 0.02
+      },
+      "weekday_offpeak": {
+        "population": 0.15,
+        "traffic_proxy": 0.2,
+        "poi_office": 0.18,
+        "poi_education": 0.08,
+        "poi_health": 0.05,
+        "poi_food": 0.06,
+        "poi_entertainment": 0.01,
+        "poi_mall": 0.05,
+        "poi_supermarket": 0.05,
+        "poi_bank": 0.05,
+        "poi_worship": 0.01,
+        "poi_hotel": 0.03,
+        "poi_transport_hub": 0.05,
+        "commercial_share": 0.03
+      },
+      "weekend_peak": {
+        "population": 0.3,
+        "traffic_proxy": 0.1,
+        "poi_office": 0.0,
+        "poi_education": 0.0,
+        "poi_health": 0.03,
+        "poi_food": 0.15,
+        "poi_entertainment": 0.08,
+        "poi_mall": 0.12,
+        "poi_supermarket": 0.08,
+        "poi_bank": 0.0,
+        "poi_worship": 0.04,
+        "poi_hotel": 0.05,
+        "poi_transport_hub": 0.02,
+        "commercial_share": 0.03
+      },
+      "weekend_offpeak": {
+        "population": 0.2,
+        "traffic_proxy": 0.15,
+        "poi_office": 0.02,
+        "poi_education": 0.02,
+        "poi_health": 0.05,
+        "poi_food": 0.08,
+        "poi_entertainment": 0.04,
+        "poi_mall": 0.1,
+        "poi_supermarket": 0.1,
+        "poi_bank": 0.02,
+        "poi_worship": 0.08,
+        "poi_hotel": 0.05,
+        "poi_transport_hub": 0.04,
+        "commercial_share": 0.05
+      }
+    },
+    "mclp": {
+      "N_SITES": 15,
+      "RADIUS_M": 3000,
+      "power_factor": 0.9,
+      "EV_share_of_spare": 0.2,
+      "station_MW_by_scenario": {
+        "low": 0.25,
+        "medium": 0.5,
+        "high": 1.0
+      },
+      "H3_res": 8
+    }
+  },
+  "metrics": {
+    "2.2_hotspots": {
+      "kmeans_k": 3,
+      "kmeans": {
+        "silhouette": 0.4145,
+        "davies_bouldin": 0.8643
+      },
+      "dbscan_eps_km": 1.9316,
+      "dbscan": {
+        "clusters": 1,
+        "noise_%": 5.0691,
+        "silhouette": null,
+        "davies_bouldin": null
+      },
+      "kept": "kmeans"
+    },
+    "2.3_ahp": {
+      "weights": {
+        "demand": 0.403,
+        "grid": 0.2444,
+        "road": 0.1367,
+        "land": 0.0791,
+        "competition": 0.1367
+      },
+      "lambda_max": 5.0331,
+      "CR": 0.0074,
+      "CR_ok": true
+    },
+    "2.5_mclp_comparison": [
+      {
+        "method": "MCLP + grid (proposed)",
+        "scenario": "low",
+        "runtime_s": 10.495,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 84.707,
+        "coverage_weekday_offpeak_%": 85.433,
+        "coverage_weekend_peak_%": 85.738,
+        "coverage_weekend_offpeak_%": 85.255,
+        "coverage_temporal_%": 85.305,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "MCLP without grid",
+        "scenario": "low",
+        "runtime_s": 11.429,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 84.707,
+        "coverage_weekday_offpeak_%": 85.433,
+        "coverage_weekend_peak_%": 85.738,
+        "coverage_weekend_offpeak_%": 85.255,
+        "coverage_temporal_%": 85.305,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "Traffic-only top-N",
+        "scenario": "low",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 14.17,
+        "coverage_weekday_offpeak_%": 15.03,
+        "coverage_weekend_peak_%": 14.598,
+        "coverage_weekend_offpeak_%": 14.693,
+        "coverage_temporal_%": 14.813,
+        "grid_violations": 1,
+        "grid_overload_MW": 0.71
+      },
+      {
+        "method": "Static MCDM top-N",
+        "scenario": "low",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 18.339,
+        "coverage_weekday_offpeak_%": 18.546,
+        "coverage_weekend_peak_%": 18.943,
+        "coverage_weekend_offpeak_%": 18.151,
+        "coverage_temporal_%": 18.444,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "K-Means centres only",
+        "scenario": "low",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 76.835,
+        "coverage_weekday_offpeak_%": 78.237,
+        "coverage_weekend_peak_%": 77.575,
+        "coverage_weekend_offpeak_%": 77.555,
+        "coverage_temporal_%": 77.855,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "MCLP + grid (proposed)",
+        "scenario": "medium",
+        "runtime_s": 12.541,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 83.777,
+        "coverage_weekday_offpeak_%": 84.36,
+        "coverage_weekend_peak_%": 84.806,
+        "coverage_weekend_offpeak_%": 84.293,
+        "coverage_temporal_%": 84.284,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "MCLP without grid",
+        "scenario": "medium",
+        "runtime_s": 11.456,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 84.707,
+        "coverage_weekday_offpeak_%": 85.433,
+        "coverage_weekend_peak_%": 85.738,
+        "coverage_weekend_offpeak_%": 85.255,
+        "coverage_temporal_%": 85.305,
+        "grid_violations": 1,
+        "grid_overload_MW": 0.104
+      },
+      {
+        "method": "Traffic-only top-N",
+        "scenario": "medium",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 14.17,
+        "coverage_weekday_offpeak_%": 15.03,
+        "coverage_weekend_peak_%": 14.598,
+        "coverage_weekend_offpeak_%": 14.693,
+        "coverage_temporal_%": 14.813,
+        "grid_violations": 1,
+        "grid_overload_MW": 4.21
+      },
+      {
+        "method": "Static MCDM top-N",
+        "scenario": "medium",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 18.339,
+        "coverage_weekday_offpeak_%": 18.546,
+        "coverage_weekend_peak_%": 18.943,
+        "coverage_weekend_offpeak_%": 18.151,
+        "coverage_temporal_%": 18.444,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "K-Means centres only",
+        "scenario": "medium",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 76.835,
+        "coverage_weekday_offpeak_%": 78.237,
+        "coverage_weekend_peak_%": 77.575,
+        "coverage_weekend_offpeak_%": 77.555,
+        "coverage_temporal_%": 77.855,
+        "grid_violations": 1,
+        "grid_overload_MW": 0.104
+      },
+      {
+        "method": "MCLP + grid (proposed)",
+        "scenario": "high",
+        "runtime_s": 1.348,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 83.432,
+        "coverage_weekday_offpeak_%": 84.335,
+        "coverage_weekend_peak_%": 84.515,
+        "coverage_weekend_offpeak_%": 84.09,
+        "coverage_temporal_%": 84.162,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "MCLP without grid",
+        "scenario": "high",
+        "runtime_s": 11.408,
+        "status": 0.0,
+        "sites": 15.0,
+        "coverage_weekday_peak_%": 84.707,
+        "coverage_weekday_offpeak_%": 85.433,
+        "coverage_weekend_peak_%": 85.738,
+        "coverage_weekend_offpeak_%": 85.255,
+        "coverage_temporal_%": 85.305,
+        "grid_violations": 2,
+        "grid_overload_MW": 1.128
+      },
+      {
+        "method": "Traffic-only top-N",
+        "scenario": "high",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 14.17,
+        "coverage_weekday_offpeak_%": 15.03,
+        "coverage_weekend_peak_%": 14.598,
+        "coverage_weekend_offpeak_%": 14.693,
+        "coverage_temporal_%": 14.813,
+        "grid_violations": 1,
+        "grid_overload_MW": 11.21
+      },
+      {
+        "method": "Static MCDM top-N",
+        "scenario": "high",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 18.339,
+        "coverage_weekday_offpeak_%": 18.546,
+        "coverage_weekend_peak_%": 18.943,
+        "coverage_weekend_offpeak_%": 18.151,
+        "coverage_temporal_%": 18.444,
+        "grid_violations": 0,
+        "grid_overload_MW": 0.0
+      },
+      {
+        "method": "K-Means centres only",
+        "scenario": "high",
+        "runtime_s": null,
+        "status": null,
+        "sites": null,
+        "coverage_weekday_peak_%": 76.835,
+        "coverage_weekday_offpeak_%": 78.237,
+        "coverage_weekend_peak_%": 77.575,
+        "coverage_weekend_offpeak_%": 77.555,
+        "coverage_temporal_%": 77.855,
+        "grid_violations": 2,
+        "grid_overload_MW": 1.128
+      }
+    ],
+    "2.5_grid_stress_test": [
+      {
+        "station_MW": 0.5,
+        "sites_with_grid": 15,
+        "coverage_grid_%": 84.284,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 1,
+        "overload_no_grid_MW": 0.104
+      },
+      {
+        "station_MW": 1.0,
+        "sites_with_grid": 15,
+        "coverage_grid_%": 84.162,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 2,
+        "overload_no_grid_MW": 1.128
+      },
+      {
+        "station_MW": 2.0,
+        "sites_with_grid": 15,
+        "coverage_grid_%": 81.625,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 2,
+        "overload_no_grid_MW": 4.128
+      },
+      {
+        "station_MW": 3.0,
+        "sites_with_grid": 15,
+        "coverage_grid_%": 78.932,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 3,
+        "overload_no_grid_MW": 8.052
+      },
+      {
+        "station_MW": 4.0,
+        "sites_with_grid": 15,
+        "coverage_grid_%": 75.648,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 5,
+        "overload_no_grid_MW": 15.246
+      },
+      {
+        "station_MW": 6.0,
+        "sites_with_grid": 10,
+        "coverage_grid_%": 53.834,
+        "violations_grid": 0,
+        "coverage_no_grid_%": 85.305,
+        "violations_no_grid": 8,
+        "overload_no_grid_MW": 35.604
+      }
+    ],
+    "validation_holdout": {
+      "existing_chargers": 22,
+      "hit_rate_1.5km_proposed_%": 50.0,
+      "hit_rate_1.5km_traffic_only_%": 13.6364
+    },
+    "validation_sensitivity": {
+      "min_top10_overlap_%": 90.0,
+      "mean_top10_overlap_%": 95.0,
+      "min_kendall_tau": 0.9605,
+      "target_met": true,
+      "table": [
+        {
+          "criterion": "demand",
+          "change": "-20%",
+          "top10_overlap_%": 100,
+          "kendall_tau": 0.961
+        },
+        {
+          "criterion": "demand",
+          "change": "+20%",
+          "top10_overlap_%": 90,
+          "kendall_tau": 0.97
+        },
+        {
+          "criterion": "grid",
+          "change": "-20%",
+          "top10_overlap_%": 90,
+          "kendall_tau": 0.972
+        },
+        {
+          "criterion": "grid",
+          "change": "+20%",
+          "top10_overlap_%": 90,
+          "kendall_tau": 0.974
+        },
+        {
+          "criterion": "road",
+          "change": "-20%",
+          "top10_overlap_%": 100,
+          "kendall_tau": 0.979
+        },
+        {
+          "criterion": "road",
+          "change": "+20%",
+          "top10_overlap_%": 90,
+          "kendall_tau": 0.98
+        },
+        {
+          "criterion": "land",
+          "change": "-20%",
+          "top10_overlap_%": 90,
+          "kendall_tau": 0.985
+        },
+        {
+          "criterion": "land",
+          "change": "+20%",
+          "top10_overlap_%": 100,
+          "kendall_tau": 0.986
+        },
+        {
+          "criterion": "competition",
+          "change": "-20%",
+          "top10_overlap_%": 100,
+          "kendall_tau": 0.965
+        },
+        {
+          "criterion": "competition",
+          "change": "+20%",
+          "top10_overlap_%": 100,
+          "kendall_tau": 0.964
+        }
+      ]
+    }
+  },
+  "summary_medium": [
+    {
+      "method": "MCLP + grid (proposed)",
+      "coverage_temporal_%": 84.2835,
+      "coverage_weekday_peak_%": 83.7765,
+      "coverage_weekend_peak_%": 84.8056,
+      "grid_violations": 0,
+      "grid_overload_MW": 0.0,
+      "proposed": true
+    },
+    {
+      "method": "MCLP without grid",
+      "coverage_temporal_%": 85.3052,
+      "coverage_weekday_peak_%": 84.7072,
+      "coverage_weekend_peak_%": 85.7382,
+      "grid_violations": 1,
+      "grid_overload_MW": 0.104,
+      "proposed": false
+    },
+    {
+      "method": "Traffic-only top-N",
+      "coverage_temporal_%": 14.8129,
+      "coverage_weekday_peak_%": 14.1697,
+      "coverage_weekend_peak_%": 14.5978,
+      "grid_violations": 1,
+      "grid_overload_MW": 4.21,
+      "proposed": false
+    },
+    {
+      "method": "Static MCDM top-N",
+      "coverage_temporal_%": 18.444,
+      "coverage_weekday_peak_%": 18.3393,
+      "coverage_weekend_peak_%": 18.943,
+      "grid_violations": 0,
+      "grid_overload_MW": 0.0,
+      "proposed": false
+    },
+    {
+      "method": "K-Means centres only",
+      "coverage_temporal_%": 77.8546,
+      "coverage_weekday_peak_%": 76.8349,
+      "coverage_weekend_peak_%": 77.5749,
+      "grid_violations": 1,
+      "grid_overload_MW": 0.104,
+      "proposed": false
+    }
+  ]
+}

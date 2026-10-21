@@ -1,0 +1,172 @@
+{
+  "created_utc": "2026-10-19T08:36:25+00:00",
+  "outputs": {
+    "district": {
+      "file": "district.parquet",
+      "rows": 1,
+      "mb": 0.18
+    },
+    "district_buffer": {
+      "file": "district_buffer.parquet",
+      "rows": 1,
+      "mb": 0.02
+    },
+    "ds_divisions": {
+      "file": "ds_divisions.parquet",
+      "rows": 13,
+      "mb": 0.56
+    },
+    "gn_divisions": {
+      "file": "gn_divisions.parquet",
+      "rows": 557,
+      "mb": 2.73
+    },
+    "roads": {
+      "file": "osm_roads.parquet",
+      "rows": 39789,
+      "mb": 5.03
+    },
+    "pois": {
+      "file": "osm_pois.parquet",
+      "rows": 6174,
+      "mb": 0.27
+    },
+    "landuse": {
+      "file": "osm_landuse.parquet",
+      "rows": 2531,
+      "mb": 0.99
+    },
+    "worldpop": {
+      "file": "worldpop_2020_colombo.tif",
+      "width": 594,
+      "height": 429,
+      "nodata": -99999.0
+    },
+    "worldcover": {
+      "file": "worldcover_2021_colombo.tif",
+      "width": 5933,
+      "height": 4276,
+      "nodata": 0.0
+    },
+    "substations_osm": {
+      "file": "substations_osm.parquet",
+      "rows": 141,
+      "mb": 0.02
+    },
+    "ceb_gss": {
+      "file": "ceb_gss_capacity_2013plan.parquet",
+      "rows": 95,
+      "mb": 0.03
+    },
+    "chargers": {
+      "file": "existing_chargers_osm.parquet",
+      "rows": 66,
+      "mb": 0.01
+    },
+    "registrations": {
+      "file": "dmt_new_registrations_2019_2023.csv",
+      "rows": 27,
+      "mb": 0.0
+    }
+  },
+  "cleaning": {
+    "pois": {
+      "pois_in": 7238,
+      "outside_area": 448,
+      "duplicates_within_30m": 616,
+      "pois_out": 6174
+    },
+    "chargers": {
+      "rows_in": 66,
+      "duplicates_within_30m": 0,
+      "rows_out": 66
+    }
+  },
+  "summary": {
+    "district_area_km2": 688.2,
+    "ds_divisions": 13,
+    "gn_divisions": 557,
+    "road_km_in_district_by_class": {
+      "living_street": 495.8,
+      "motorway": 58.2,
+      "primary": 475.8,
+      "residential": 3448.8,
+      "secondary": 106.3,
+      "tertiary": 393.6,
+      "trunk": 151.9,
+      "unclassified": 275.3
+    },
+    "pois_in_district_by_category": {
+      "food": 1002,
+      "office": 874,
+      "worship": 761,
+      "education": 547,
+      "bank": 483,
+      "car_park": 412,
+      "supermarket": 339,
+      "hotel": 253,
+      "health": 158,
+      "fuel_station": 141,
+      "transport_hub": 104,
+      "entertainment": 57,
+      "sports": 52,
+      "mall": 50,
+      "market": 40,
+      "existing_charger": 22,
+      "rest_area": 3
+    },
+    "population_2020_district": 2387016,
+    "landcover_district_pct": {
+      "tree": 67.95,
+      "shrub": 0.02,
+      "grass": 2.44,
+      "crop": 2.97,
+      "built_up": 23.69,
+      "bare": 0.76,
+      "water": 1.96,
+      "wetland": 0.21
+    },
+    "ceb_gss_total": 95,
+    "ceb_gss_located": 80,
+    "ceb_gss_location_source": {
+      "osm_place_exact (approx.)": 38,
+      "osm_substation_exact": 37,
+      "unlocated_no_name_match": 13,
+      "osm_substation_fuzzy": 5,
+      "unlocated_ambiguous_name": 2
+    },
+    "ceb_gss_serving_study_area": 30,
+    "ceb_gss_unlocated": [
+      "Port City 1",
+      "Port City 2",
+      "Sub B (Pettah)",
+      "Sub L (Port)",
+      "Sub N (Hunupitiya)",
+      "New Anuradhapura",
+      "Chemmany",
+      "Eluwankulama",
+      "Madampe",
+      "Wimalasurendra",
+      "Kappalthurei",
+      "Aniyakanda",
+      "Kukule",
+      "Wewalwatta",
+      "Hambantota Port"
+    ],
+    "chargers_in_district": 22,
+    "new_ev_registrations_national": {
+      "2019": 757,
+      "2020": 340,
+      "2021": 276,
+      "2022": 746,
+      "2023": 2183
+    }
+  },
+  "notes": [
+    "Expressway corridor not yet chosen (supervisor) - only Colombo District + 5 km buffer.",
+    "WorldCover maps home gardens as 'tree' - built_up share understates urban area.",
+    "Substation capacity/load = CEB LTTDP 2013-2022 FORECAST for 2025 (assumption, not measured). OSM has no capacity tags. Current data requested via supervisor.",
+    "Existing chargers from OSM are INCOMPLETE (66 sites in Sri Lanka vs 100+ Volt Charge, 300+ ChargeNET) - hold-out validation needs the operator lists.",
+    "DMT registrations are national only (no district split) and end in 2023."
+  ]
+}

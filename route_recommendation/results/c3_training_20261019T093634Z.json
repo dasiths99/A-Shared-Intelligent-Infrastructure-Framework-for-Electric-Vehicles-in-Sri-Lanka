@@ -1,0 +1,291 @@
+{
+  "run_id": "20261019T093634Z",
+  "seed": 42,
+  "config": {
+    "features": [
+      "dist_m",
+      "duration_s",
+      "speed_mean_kmh",
+      "speed_std_kmh",
+      "speed_max_kmh",
+      "n_stops",
+      "stopped_s",
+      "acc_pos_mean",
+      "acc_neg_mean",
+      "elev_change_m",
+      "grade_pct",
+      "ambient_c_mean",
+      "kinetic_term",
+      "v3_term"
+    ],
+    "physics_bounds": {
+      "mass_kg": [
+        900,
+        2600
+      ],
+      "crr": [
+        0.005,
+        0.025
+      ],
+      "cda_m2": [
+        0.35,
+        1.0
+      ],
+      "eta_drive": [
+        0.7,
+        0.98
+      ],
+      "eta_regen": [
+        0.3,
+        0.95
+      ],
+      "aux_base_kw": [
+        0.0,
+        2.0
+      ],
+      "aux_cold_kw_per_C": [
+        0.0,
+        0.5
+      ],
+      "aux_hot_kw_per_C": [
+        0.0,
+        0.5
+      ]
+    },
+    "usable_kwh_bmw": 18.8,
+    "reserve": 0.15,
+    "corridor_waypoints": [
+      [
+        "Colombo",
+        6.9344,
+        79.8428
+      ],
+      [
+        "Kadawatha",
+        7.001,
+        79.953
+      ],
+      [
+        "Nittambuwa",
+        7.144,
+        80.096
+      ],
+      [
+        "Kegalle",
+        7.2513,
+        80.3464
+      ],
+      [
+        "Mawanella",
+        7.252,
+        80.444
+      ],
+      [
+        "Kadugannawa",
+        7.254,
+        80.524
+      ],
+      [
+        "Peradeniya",
+        7.269,
+        80.594
+      ],
+      [
+        "Gampola",
+        7.164,
+        80.577
+      ],
+      [
+        "Ramboda",
+        7.058,
+        80.695
+      ],
+      [
+        "Nuwara Eliya",
+        6.9497,
+        80.7891
+      ]
+    ]
+  },
+  "metrics": {
+    "3.1_physics_params": {
+      "bmw": {
+        "mass_kg": 1549.3923,
+        "crr": 0.01,
+        "cda_m2": 0.6218,
+        "eta_drive": 0.9163,
+        "eta_regen": 0.812,
+        "aux_base_kw": 0.9284,
+        "aux_cold_kw_per_C": 0.1481,
+        "aux_hot_kw_per_C": 0.0783
+      },
+      "eved": {
+        "mass_kg": 1491.1404,
+        "crr": 0.0156,
+        "cda_m2": 0.578,
+        "eta_drive": 0.9371,
+        "eta_regen": 0.8526,
+        "aux_base_kw": 0.0,
+        "aux_cold_kw_per_C": 0.1345,
+        "aux_hot_kw_per_C": 0.0777
+      }
+    },
+    "3.2_accuracy_test": [
+      {
+        "vehicle": "BMW i3 60Ah",
+        "method": "constant kWh/km (baseline)",
+        "segment_MAE_Wh": 22.5189,
+        "segment_RMSE_Wh": 32.4942,
+        "segment_WAPE_%": 64.8308,
+        "trip_MAE_kWh": 0.4841,
+        "trip_MAPE_%": 23.2632,
+        "flat_MAE_Wh": 22.2062,
+        "hilly_MAE_Wh (|grade|>=2%)": null,
+        "test_segments": 1034,
+        "test_trips": 11,
+        "hilly_segments": 8,
+        "trip_accuracy_%": 76.7368
+      },
+      {
+        "vehicle": "BMW i3 60Ah",
+        "method": "physics-only (baseline)",
+        "segment_MAE_Wh": 5.8136,
+        "segment_RMSE_Wh": 9.7833,
+        "segment_WAPE_%": 16.737,
+        "trip_MAE_kWh": 0.2484,
+        "trip_MAPE_%": 8.3263,
+        "flat_MAE_Wh": 5.6475,
+        "hilly_MAE_Wh (|grade|>=2%)": null,
+        "test_segments": 1034,
+        "test_trips": 11,
+        "hilly_segments": 8,
+        "trip_accuracy_%": 91.6737
+      },
+      {
+        "vehicle": "BMW i3 60Ah",
+        "method": "ML-only XGBoost (baseline)",
+        "segment_MAE_Wh": 5.4551,
+        "segment_RMSE_Wh": 9.1043,
+        "segment_WAPE_%": 15.7048,
+        "trip_MAE_kWh": 0.2292,
+        "trip_MAPE_%": 9.7647,
+        "flat_MAE_Wh": 5.3008,
+        "hilly_MAE_Wh (|grade|>=2%)": null,
+        "test_segments": 1034,
+        "test_trips": 11,
+        "hilly_segments": 8,
+        "trip_accuracy_%": 90.2353
+      },
+      {
+        "vehicle": "BMW i3 60Ah",
+        "method": "Hybrid physics + XGBoost (proposed)",
+        "segment_MAE_Wh": 5.2687,
+        "segment_RMSE_Wh": 9.5308,
+        "segment_WAPE_%": 15.1684,
+        "trip_MAE_kWh": 0.2412,
+        "trip_MAPE_%": 8.3678,
+        "flat_MAE_Wh": 5.0865,
+        "hilly_MAE_Wh (|grade|>=2%)": null,
+        "test_segments": 1034,
+        "test_trips": 11,
+        "hilly_segments": 8,
+        "trip_accuracy_%": 91.6322
+      },
+      {
+        "vehicle": "Nissan Leaf 2013 (eVED)",
+        "method": "constant kWh/km (baseline)",
+        "segment_MAE_Wh": 21.804,
+        "segment_RMSE_Wh": 27.7532,
+        "segment_WAPE_%": 71.7383,
+        "trip_MAE_kWh": 0.2439,
+        "trip_MAPE_%": 34.83,
+        "flat_MAE_Wh": 19.8589,
+        "hilly_MAE_Wh (|grade|>=2%)": 26.6246,
+        "test_segments": 1767,
+        "test_trips": 53,
+        "hilly_segments": 508,
+        "trip_accuracy_%": 65.17
+      },
+      {
+        "vehicle": "Nissan Leaf 2013 (eVED)",
+        "method": "physics-only (baseline)",
+        "segment_MAE_Wh": 6.7184,
+        "segment_RMSE_Wh": 9.8267,
+        "segment_WAPE_%": 22.1044,
+        "trip_MAE_kWh": 0.1013,
+        "trip_MAPE_%": 12.0525,
+        "flat_MAE_Wh": 6.0905,
+        "hilly_MAE_Wh (|grade|>=2%)": 8.2744,
+        "test_segments": 1767,
+        "test_trips": 53,
+        "hilly_segments": 508,
+        "trip_accuracy_%": 87.9475
+      },
+      {
+        "vehicle": "Nissan Leaf 2013 (eVED)",
+        "method": "ML-only XGBoost (baseline)",
+        "segment_MAE_Wh": 6.7115,
+        "segment_RMSE_Wh": 9.6005,
+        "segment_WAPE_%": 22.0819,
+        "trip_MAE_kWh": 0.0929,
+        "trip_MAPE_%": 11.1648,
+        "flat_MAE_Wh": 6.054,
+        "hilly_MAE_Wh (|grade|>=2%)": 8.341,
+        "test_segments": 1767,
+        "test_trips": 53,
+        "hilly_segments": 508,
+        "trip_accuracy_%": 88.8352
+      },
+      {
+        "vehicle": "Nissan Leaf 2013 (eVED)",
+        "method": "Hybrid physics + XGBoost (proposed)",
+        "segment_MAE_Wh": 6.4775,
+        "segment_RMSE_Wh": 9.3125,
+        "segment_WAPE_%": 21.3119,
+        "trip_MAE_kWh": 0.0921,
+        "trip_MAPE_%": 10.8028,
+        "flat_MAE_Wh": 5.8967,
+        "hilly_MAE_Wh (|grade|>=2%)": 7.917,
+        "test_segments": 1767,
+        "test_trips": 53,
+        "hilly_segments": 508,
+        "trip_accuracy_%": 89.1972
+      }
+    ],
+    "3.3_corridor_scenario": {
+      "constant kWh/km": {
+        "trip_kWh_up": 22.939,
+        "km_when_SoC_hits_15%": 97.244,
+        "hill_section_kWh (km>=110)": 4.833,
+        "trip_kWh_down": 22.939
+      },
+      "physics-only": {
+        "trip_kWh_up": 21.962,
+        "km_when_SoC_hits_15%": 115.839,
+        "hill_section_kWh (km>=110)": 7.958,
+        "trip_kWh_down": 7.785
+      },
+      "hybrid (proposed)": {
+        "trip_kWh_up": 20.821,
+        "km_when_SoC_hits_15%": 124.099,
+        "hill_section_kWh (km>=110)": 7.427,
+        "trip_kWh_down": 9.114
+      }
+    },
+    "3.4_stop_choice": {
+      "reserve_point_km": 124.0987,
+      "candidates": 21,
+      "recommended": {
+        "name": "unnamed (osm n4451144490)",
+        "route_km": 89.1342,
+        "kw": 22.0,
+        "soc_arrival_%": 42.6731
+      },
+      "nearest_baseline": {
+        "name": "unnamed (osm n4451143990)",
+        "route_km": 94.2023,
+        "kw": 22.0
+      }
+    }
+  }
+}

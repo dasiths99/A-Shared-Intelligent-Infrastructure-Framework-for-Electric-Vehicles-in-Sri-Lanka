@@ -1,0 +1,177 @@
+{
+  "created_utc": "2026-10-19T08:19:53+00:00",
+  "cleaning": {
+    "sessions_acn": {
+      "rows_in": 66745,
+      "missing_or_ambiguous_time": 0,
+      "duplicate_session_id": 0,
+      "duplicate_station_time": 0,
+      "duplicate_station_minute_kwh": 0,
+      "stay_too_short": 16,
+      "stay_too_long": 97,
+      "zero_or_missing_kwh": 0,
+      "kwh_too_large": 1,
+      "impossible_avg_power": 2,
+      "charging_h_set_missing": 144,
+      "rows_out": 66629
+    },
+    "sessions_utrecht": {
+      "rows_in": 55379,
+      "missing_or_ambiguous_time": 0,
+      "duplicate_session_id": 0,
+      "duplicate_station_time": 0,
+      "duplicate_station_minute_kwh": 1,
+      "stay_too_short": 0,
+      "stay_too_long": 0,
+      "zero_or_missing_kwh": 0,
+      "kwh_too_large": 0,
+      "impossible_avg_power": 0,
+      "charging_h_set_missing": 0,
+      "rows_out": 55378
+    },
+    "sessions_boulder": {
+      "rows_in": 148136,
+      "missing_or_ambiguous_time": 4,
+      "duplicate_session_id": 0,
+      "duplicate_station_time": 62494,
+      "duplicate_station_minute_kwh": 7869,
+      "stay_too_short": 8493,
+      "stay_too_long": 582,
+      "zero_or_missing_kwh": 1095,
+      "kwh_too_large": 0,
+      "impossible_avg_power": 0,
+      "charging_h_set_missing": 0,
+      "rows_out": 67599
+    },
+    "recon_monthly": {
+      "rows_in": 101575,
+      "bad_rows": 647,
+      "duplicates": 0,
+      "flag_extreme": 0,
+      "rows_out": 100928
+    },
+    "urbanev_zone_hourly": {
+      "rows_in": 1194600,
+      "missing_time_or_value": 0,
+      "negative_values": 0,
+      "rows_out": 1194600
+    },
+    "recon_15min": {
+      "readings_in": 45613280,
+      "readings_bad_time_or_value": 0,
+      "readings_duplicate": 0,
+      "intervals_possible": 45610342,
+      "gap_not_15min": 100604,
+      "negative_diff_meter_reset": 7625,
+      "too_large_gt_15kW": 43234,
+      "intervals_out": 45462326
+    }
+  },
+  "outputs": {
+    "ev_sessions": {
+      "file": "data\\processed\\ev_sessions_clean.parquet",
+      "rows": 189606,
+      "mb": 9.2
+    },
+    "ev_users": {
+      "file": "data\\processed\\ev_users_summary.parquet",
+      "rows": 4416,
+      "mb": 0.2
+    },
+    "recon_monthly": {
+      "file": "data\\processed\\recon_monthly_clean.parquet",
+      "rows": 100928,
+      "mb": 0.2
+    },
+    "urbanev_zone_hourly": {
+      "file": "data\\processed\\urbanev_zone_hourly.parquet",
+      "rows": 1194600,
+      "mb": 6.3
+    },
+    "urbanev_zone_info": {
+      "file": "data\\processed\\urbanev_zone_info.parquet",
+      "rows": 275,
+      "mb": 0.0
+    },
+    "recon_household_15min": {
+      "file": "data\\interim\\recon_household_15min.parquet",
+      "rows": 45462326,
+      "mb": 158.6
+    },
+    "recon_baseload_15min": {
+      "file": "data\\processed\\recon_baseload_15min.parquet",
+      "rows": 35712,
+      "mb": 0.8
+    }
+  },
+  "split_counts": {
+    "ev_sessions": {
+      "acn": {
+        "excluded": 12922,
+        "test": 9141,
+        "train": 36949,
+        "val": 7617
+      },
+      "boulder": {
+        "excluded": 0,
+        "test": 8604,
+        "train": 51839,
+        "val": 7156
+      },
+      "utrecht": {
+        "excluded": 0,
+        "test": 8347,
+        "train": 38977,
+        "val": 8054
+      }
+    },
+    "urbanev_zone_hourly": {
+      "train": 807400,
+      "val": 204600,
+      "test": 182600
+    },
+    "recon_baseload_15min": {
+      "train": 22343,
+      "val": 6815,
+      "test": 6554
+    }
+  },
+  "notes": [
+    "UrbanEV: zip has no weather file (README mentions one); 'occupancy' values look like counts of busy piles, not % as the README says - check before use.",
+    "RECON-SL: 2931 households with valid 15-min intervals; base load slots need >= 50 households."
+  ],
+  "splits": {
+    "sessions": {
+      "acn": {
+        "start": "2018-04-01",
+        "val": "2019-08-01",
+        "test": "2019-11-01",
+        "end": "2020-03-01"
+      },
+      "utrecht": {
+        "start": "2020-08-01",
+        "val": "2024-02-01",
+        "test": "2024-05-22",
+        "end": "2024-11-01"
+      },
+      "boulder": {
+        "start": "2018-01-01",
+        "val": "2023-04-11",
+        "test": "2023-07-29",
+        "end": "2023-12-02"
+      }
+    },
+    "recon_baseload": {
+      "start": "2023-09-30",
+      "val": "2024-08-01",
+      "test": "2024-10-16",
+      "end": "2024-12-24"
+    },
+    "urbanev": {
+      "start": "2022-08-31",
+      "val": "2023-01-01",
+      "test": "2023-02-01",
+      "end": "2023-03-01"
+    }
+  }
+}

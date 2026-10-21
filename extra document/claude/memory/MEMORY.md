@@ -1,0 +1,2 @@
+- [Develop components separately](develop-components-separately.md) — C1/C2/C3 stay in own folders, no integration until user says "merge"; raw data never modified
+- [Environment quirks](environment-quirks.md) — Controlled Folder Access blocks Git Bash writes; port 5173 taken (use 5181-5183); per-component Python 3.11 `.venv` inside each component folder

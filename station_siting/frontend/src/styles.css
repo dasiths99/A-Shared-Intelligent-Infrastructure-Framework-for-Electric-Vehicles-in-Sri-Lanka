@@ -1,0 +1,53 @@
+/* C2 "GridSite Planner" – dark, data-dense planning dashboard (slate / amber / sky). */
+:root { --bg: #0b1220; --side: #111a2e; --panel: #0f172a; --line: #1e2a44; --ink: #e2e8f0; --muted: #8aa0bf;
+  --amber: #f59e0b; --sky: #38bdf8; --green: #34d399; --red: #f87171; --violet: #a78bfa; }
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 13px; }
+.loading { display: grid; place-items: center; height: 100%; color: var(--muted); }
+.layout { display: grid; grid-template-columns: 330px 1fr; height: 100%; }
+.side { background: var(--side); border-right: 1px solid var(--line); padding: 16px 16px 24px; overflow-y: auto; }
+.logo { font-size: 18px; letter-spacing: 3px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 6px; }
+.logo b { color: var(--amber); } .logo small { display: block; letter-spacing: 0; font-size: 11px; margin-top: 4px; }
+section { border-bottom: 1px solid var(--line); padding: 12px 0; }
+h4 { margin: 0 0 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--muted); display: flex; justify-content: space-between; }
+select, input.label { width: 100%; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 8px; font: inherit; }
+input.label { margin: 12px 0 8px; }
+.range { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin-bottom: 10px; color: var(--muted); }
+.range b { color: var(--ink); font-family: "IBM Plex Mono", monospace; } .range input { grid-column: 1 / -1; accent-color: var(--amber); width: 100%; }
+.toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; } .toggle input { display: none; }
+.toggle span { width: 34px; height: 18px; border-radius: 9px; background: #334155; position: relative; transition: .2s; }
+.toggle span::after { content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff; top: 2px; left: 2px; transition: .2s; }
+.toggle input:checked + span { background: var(--green); } .toggle input:checked + span::after { left: 18px; }
+.cr { font-family: "IBM Plex Mono", monospace; padding: 1px 6px; border-radius: 4px; letter-spacing: 0; }
+.cr.ok { background: rgba(52, 211, 153, .15); color: var(--green); } .cr.bad { background: rgba(248, 113, 113, .15); color: var(--red); }
+.wbar { display: grid; grid-template-columns: 120px 1fr 36px; align-items: center; gap: 8px; margin-bottom: 6px; color: var(--muted); }
+.wbar div { height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; } .wbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--amber), #fbbf24); }
+.wbar b { text-align: right; font-family: "IBM Plex Mono", monospace; color: var(--ink); }
+details summary { cursor: pointer; color: var(--sky); margin: 8px 0; }
+.pair { display: grid; grid-template-columns: 1fr 70px; gap: 6px; align-items: center; margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+.pair select { padding: 4px; }
+.note, .foot { color: var(--muted); font-size: 11px; line-height: 1.4; } .foot { margin-top: 14px; }
+.run { width: 100%; background: var(--amber); color: #1a1205; font-weight: 700; border: none; padding: 12px; border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; font-size: 14px; }
+.run:disabled { opacity: .5; cursor: wait; } .err { color: var(--red); margin-top: 8px; }
+table.runs { width: 100%; font-size: 12px; } table.runs td { padding: 3px 2px; color: var(--muted); } a { color: var(--sky); }
+.main { display: grid; grid-template-rows: 1fr auto; min-width: 0; }
+.mapwrap { position: relative; } .map { height: 100%; width: 100%; background: #0b1220; }
+.layers { position: absolute; top: 12px; right: 12px; z-index: 500; background: rgba(17, 26, 46, .92); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.layers label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.scale { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); }
+.scale i { width: 80px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, hsl(42,95%,62%), hsl(0,95%,40%)); }
+.gss-icon { color: var(--violet); font-size: 15px; text-shadow: 0 0 4px #000; text-align: center; line-height: 16px; }
+.site-icon span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--green); color: #052e1c; font-weight: 700; border: 2px solid #ecfdf5; box-shadow: 0 0 0 4px rgba(52, 211, 153, .3); }
+.panel { background: var(--panel); border-top: 1px solid var(--line); padding: 14px 16px; max-height: 42vh; overflow-y: auto; }
+.placeholder { color: var(--muted); max-width: 760px; line-height: 1.6; }
+.kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 12px; }
+.kpi { background: var(--side); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.kpi span { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+.kpi b { font-size: 22px; font-family: "IBM Plex Mono", monospace; } .kpi.accent b { color: var(--amber); } .kpi.bad b { color: var(--red); }
+.twocol { display: grid; grid-template-columns: 1fr 1.3fr; gap: 14px; } .sites { max-height: 190px; overflow-y: auto; }
+table.cmp { width: 100%; border-collapse: collapse; } table.cmp th { text-align: left; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--line); padding: 5px; font-size: 11px; text-transform: uppercase; }
+table.cmp td { padding: 5px; border-bottom: 1px solid var(--line); } table.cmp tr.hl td { color: var(--amber); font-weight: 700; } td.red { color: var(--red); font-weight: 700; }
+.exports { margin-top: 10px; color: var(--muted); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #111a2e; color: var(--ink); } .leaflet-container a { color: var(--sky); }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .side { max-height: 45vh; } .kpis { grid-template-columns: repeat(2, 1fr); } .twocol { grid-template-columns: 1fr; } }

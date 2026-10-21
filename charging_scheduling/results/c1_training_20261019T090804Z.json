@@ -1,0 +1,348 @@
+{
+  "run_id": "20261019T090804Z",
+  "seed": 42,
+  "config": {
+    "1.4_scenario": {
+      "N_HOMES": 1000,
+      "N_EV": 200,
+      "P_MAX_kW": 7.4,
+      "arrival": "N(18.5h, 1.2h) clip 16-22.5",
+      "departure": "N(7.25h, 0.6h) clip 5.5-9.5",
+      "energy": "sample of real Utrecht kWh, clip 2-25",
+      "default_departure_h": 8.0
+    },
+    "baseload_split": {
+      "start": "2023-09-30",
+      "val": "2024-08-01",
+      "test": "2024-10-16",
+      "end": "2024-12-24"
+    },
+    "acn_split": {
+      "start": "2018-04-01",
+      "val": "2019-08-01",
+      "test": "2019-11-01",
+      "end": "2020-03-01"
+    },
+    "forecast_features": [
+      "slot",
+      "weekday",
+      "is_weekend",
+      "month",
+      "lag_96",
+      "lag_192",
+      "lag_288",
+      "lag_672",
+      "lag_1344",
+      "mean_prev_day",
+      "mean_same_slot_4w"
+    ],
+    "need_features": [
+      "arrival_hour_local",
+      "weekday",
+      "is_weekend",
+      "site_code",
+      "prev_n",
+      "prev_mean_stay",
+      "prev_mean_kwh",
+      "prev_mean_arr",
+      "prev_std_stay",
+      "prev_last_stay",
+      "prev_last_kwh",
+      "arr_minus_usual"
+    ],
+    "cold_start_sessions": 10
+  },
+  "metrics": {
+    "1.1a_baseload_forecast": {
+      "seasonal_naive_last_week": {
+        "MAE": 0.0219,
+        "RMSE": 0.029,
+        "WAPE_%": 9.7589,
+        "MAPE_%": 9.6885
+      },
+      "naive_yesterday": {
+        "MAE": 0.0129,
+        "RMSE": 0.0175,
+        "WAPE_%": 5.7387,
+        "MAPE_%": 5.8004
+      },
+      "xgboost": {
+        "MAE": 0.0132,
+        "RMSE": 0.018,
+        "WAPE_%": 5.9,
+        "MAPE_%": 6.0669,
+        "MAE_improvement_vs_seasonal_naive_%": 39.5423
+      },
+      "info": {
+        "rows_train": 22343,
+        "rows_val": 6815,
+        "rows_test_scored": 6554,
+        "best_iteration": 133,
+        "fit_seconds": 1.4
+      }
+    },
+    "1.1b_ev_demand_forecast": {
+      "seasonal_naive_last_week": {
+        "MAE": 18.4024,
+        "RMSE": 35.4173,
+        "WAPE_%": 45.7205
+      },
+      "naive_yesterday": {
+        "MAE": 24.8956,
+        "RMSE": 47.1092,
+        "WAPE_%": 61.8525
+      },
+      "xgboost": {
+        "MAE": 12.602,
+        "RMSE": 22.5356,
+        "WAPE_%": 31.3095,
+        "MAE_improvement_vs_seasonal_naive_%": 31.5197
+      },
+      "info": {
+        "rows_train": 44448,
+        "rows_val": 8832,
+        "rows_test_scored": 11616,
+        "best_iteration": 145,
+        "fit_seconds": 1.5
+      }
+    },
+    "1.2_routine_clustering": {
+      "drivers": 1016,
+      "k": 2,
+      "silhouette": 0.4712,
+      "davies_bouldin": 1.3072,
+      "cluster_sizes": {
+        "0": 130,
+        "1": 886
+      },
+      "descriptions": {
+        "0": "afternoon/evening arrival, medium stay, irregular",
+        "1": "late-morning arrival, medium stay, irregular"
+      }
+    },
+    "1.3_need_prediction_test": {
+      "sessions": 7982,
+      "warm_share_%": 90.8168,
+      "departure_MAE_min": {
+        "profile_default": 104.8947,
+        "personal_model": 90.4105
+      },
+      "energy_MAE_kWh": {
+        "profile_default": 7.3078,
+        "personal_model": 4.2295
+      },
+      "warm_only": {
+        "departure_MAE_min_default": 101.5437,
+        "departure_MAE_min_personal": 85.5949,
+        "energy_MAE_kWh_default": 7.2829,
+        "energy_MAE_kWh_personal": 3.8932,
+        "q10_coverage_% (target ~90)": 87.1844
+      },
+      "with_app_input": {
+        "sessions": 7982,
+        "departure_MAE_min_driver_input": 157.7945,
+        "departure_MAE_min_model_with_input": 86.3634,
+        "energy_MAE_kWh_driver_input": 11.7551,
+        "energy_MAE_kWh_model_with_input": 3.7741
+      }
+    },
+    "1.4_scheduler_scenario": {
+      "day": "2024-11-19",
+      "base_peak_kW": 288.6056,
+      "runtime_s": {
+        "B4": 0.395,
+        "coordinated": 0.2986
+      },
+      "results": {
+        "B1 uncontrolled": {
+          "peak_kW": 1195.35,
+          "peak_vs_base_%": 314.181,
+          "PAR": 3.37,
+          "car_ready_%": 100.0,
+          "EV_cost_LKR_per_car": 958.354,
+          "EV_energy_in_peak_tariff_%": 79.86,
+          "peak_reduction_vs_B1_%": 0.0
+        },
+        "B2 fixed TOU 22:30": {
+          "peak_kW": 1739.808,
+          "peak_vs_base_%": 502.832,
+          "PAR": 4.905,
+          "car_ready_%": 100.0,
+          "EV_cost_LKR_per_car": 335.658,
+          "EV_energy_in_peak_tariff_%": 0.0,
+          "peak_reduction_vs_B1_%": -45.548
+        },
+        "B3 TOU + random delay": {
+          "peak_kW": 1364.125,
+          "peak_vs_base_%": 372.66,
+          "PAR": 3.846,
+          "car_ready_%": 100.0,
+          "EV_cost_LKR_per_car": 335.658,
+          "EV_energy_in_peak_tariff_%": 0.0,
+          "peak_reduction_vs_B1_%": -14.119
+        },
+        "B4 coordinated, defaults": {
+          "peak_kW": 433.179,
+          "peak_vs_base_%": 50.094,
+          "PAR": 1.275,
+          "car_ready_%": 49.5,
+          "EV_cost_LKR_per_car": 489.886,
+          "EV_energy_in_peak_tariff_%": 22.74,
+          "peak_reduction_vs_B1_%": 63.761
+        },
+        "Coordinated (personal)": {
+          "peak_kW": 441.76,
+          "peak_vs_base_%": 53.067,
+          "PAR": 1.245,
+          "car_ready_%": 100.0,
+          "EV_cost_LKR_per_car": 553.885,
+          "EV_energy_in_peak_tariff_%": 21.265,
+          "peak_reduction_vs_B1_%": 63.043
+        }
+      }
+    },
+    "1.3_q10_safe_departure_coverage_%": 87.1844
+  },
+  "summary_vs_best_baseline": [
+    {
+      "index": "1.1a base load MAE (kW/home)",
+      "baseline": 0.013,
+      "proposed": 0.013,
+      "improvement_%": 0.0,
+      "proposed_better": false
+    },
+    {
+      "index": "1.1b EV demand MAE (kW)",
+      "baseline": 18.402,
+      "proposed": 12.602,
+      "improvement_%": 31.5,
+      "proposed_better": true
+    },
+    {
+      "index": "1.3 departure MAE (min, warm)",
+      "baseline": 101.544,
+      "proposed": 85.595,
+      "improvement_%": 15.7,
+      "proposed_better": true
+    },
+    {
+      "index": "1.3 energy MAE (kWh, warm)",
+      "baseline": 7.283,
+      "proposed": 3.893,
+      "improvement_%": 46.5,
+      "proposed_better": true
+    }
+  ],
+  "accuracy_table": [
+    {
+      "model": "1.1a Base-load forecast",
+      "method": "baseline: same time last week",
+      "MAE": 0.0219,
+      "unit": "kW/home",
+      "RMSE": 0.029,
+      "WAPE_%": 9.7589,
+      "accuracy_%": 90.2411,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.1a Base-load forecast",
+      "method": "baseline: same time yesterday",
+      "MAE": 0.0129,
+      "unit": "kW/home",
+      "RMSE": 0.0175,
+      "WAPE_%": 5.7387,
+      "accuracy_%": 94.2613,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.1a Base-load forecast",
+      "method": "XGBoost (proposed)",
+      "MAE": 0.0132,
+      "unit": "kW/home",
+      "RMSE": 0.018,
+      "WAPE_%": 5.9,
+      "accuracy_%": 94.1,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.1b EV demand forecast",
+      "method": "baseline: same time last week",
+      "MAE": 18.4024,
+      "unit": "kW",
+      "RMSE": 35.4173,
+      "WAPE_%": 45.7205,
+      "accuracy_%": 54.2795,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.1b EV demand forecast",
+      "method": "baseline: same time yesterday",
+      "MAE": 24.8956,
+      "unit": "kW",
+      "RMSE": 47.1092,
+      "WAPE_%": 61.8525,
+      "accuracy_%": 38.1475,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.1b EV demand forecast",
+      "method": "XGBoost (proposed)",
+      "MAE": 12.602,
+      "unit": "kW",
+      "RMSE": 22.5356,
+      "WAPE_%": 31.3095,
+      "accuracy_%": 68.6905,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.3 Departure time",
+      "method": "baseline: profile default",
+      "MAE": 101.5437,
+      "unit": "min",
+      "RMSE": 157.177,
+      "WAPE_%": 25.2297,
+      "accuracy_%": 74.7703,
+      "within_30min_%": 29.5075,
+      "within_60min_%": 50.8208
+    },
+    {
+      "model": "1.3 Energy need",
+      "method": "baseline: profile default",
+      "MAE": 7.2829,
+      "unit": "kWh",
+      "RMSE": 11.2078,
+      "WAPE_%": 53.103,
+      "accuracy_%": 46.897,
+      "within_30min_%": null,
+      "within_60min_%": null
+    },
+    {
+      "model": "1.3 Departure time",
+      "method": "XGBoost personal (proposed)",
+      "MAE": 85.5949,
+      "unit": "min",
+      "RMSE": 126.5544,
+      "WAPE_%": 21.267,
+      "accuracy_%": 78.733,
+      "within_30min_%": 29.7696,
+      "within_60min_%": 53.0832
+    },
+    {
+      "model": "1.3 Energy need",
+      "method": "XGBoost personal (proposed)",
+      "MAE": 3.8932,
+      "unit": "kWh",
+      "RMSE": 6.3399,
+      "WAPE_%": 28.3874,
+      "accuracy_%": 71.6126,
+      "within_30min_%": null,
+      "within_60min_%": null
+    }
+  ]
+}
