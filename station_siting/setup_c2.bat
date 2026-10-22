@@ -21,7 +21,8 @@ echo.
 
 echo [1/7] Checking Python 3.11 and Node.js ...
 set "BASE="
-py -3.11 -c "import sys" >nul 2>nul && set "BASE=py -3.11"
+if defined J26_BASE_PY set BASE="%J26_BASE_PY%"
+if not defined BASE (py -3.11 -c "import sys" >nul 2>nul && set "BASE=py -3.11")
 if not defined BASE (python -c "import sys; assert sys.version_info >= (3, 10)" >nul 2>nul && set "BASE=python")
 if not defined BASE (echo [ERROR] Python 3.11 not found. Install it from python.org. & goto fail)
 where npm >nul 2>nul || (echo [ERROR] Node.js / npm not found. Install Node.js LTS. & goto fail)
@@ -31,7 +32,15 @@ REM Long project folder (e.g. unzipped "...-main\...-main") pushes DLL paths ins
 REM Windows 260-character limit ("DLL load failed ... filename too long"): path > 150 chars, or > 120 chars when
 REM Windows long-path support is off. Then use a short path instead.
 set "SHORTENV=0"
-for /f %%L in ('powershell -NoProfile -Command "$l=$env:COMP.Length; $lp=(Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -ErrorAction SilentlyContinue).LongPathsEnabled; if (($l -gt 150) -or (($l -gt 120) -and ($lp -ne 1))) {1} else {0}"') do set "SHORTENV=%%L"
+for /f %%L in ('powershell -NoProfile -Command "$l=$env:COMP.Length; $lp=(Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -ErrorAction SilentlyContinue).LongPathsEnabled; if ($l -gt 200) {2} elseif (($l -gt 150) -or (($l -gt 120) -and ($lp -ne 1))) {1} else {0}"') do set "SHORTENV=%%L"
+if "%SHORTENV%"=="2" (
+  echo.
+  echo [ERROR] The project folder path is too long for Windows ^(over 200 characters^).
+  echo         The frontend tools ^(esbuild / Vite^) cannot start from such a long path.
+  echo         Move the project folder to a short place, for example  C:\J26\  ,
+  echo         without a doubled ...-main\...-main folder, then run this file again.
+  goto fail
+)
 if "%SHORTENV%"=="1" (
   set "ENV=%LOCALAPPDATA%\J26\c2-env"
   set "PY=%LOCALAPPDATA%\J26\c2-env\Scripts\python.exe"
@@ -73,17 +82,17 @@ popd
 
 echo [7/7] Running C2 tests ...
 pushd "%ROOT%"
-"%PY%" -m pytest station_siting\tests -q -p no:cacheprovider -W ignore || (popd & echo [ERROR] tests failed & goto fail)
+"%PY%" -m pytest station_siting\tests -q -p no:cacheprovider -W ignore --basetemp "%TEMP%\j26-pytest-c2" || (popd & echo [ERROR] tests failed & goto fail)
 popd
 
 echo.
 echo  C2 environment is READY.  Start the app with run_c2.bat
 echo.
-pause
+if /I not "%~1"=="nopause" pause
 exit /b 0
 
 :fail
 echo.
 echo  C2 setup did NOT finish - read the message above.
-pause
+if /I not "%~1"=="nopause" pause
 exit /b 1

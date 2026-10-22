@@ -9,6 +9,15 @@ separately for now, each with its own data pipeline, models, backend, database a
 | **C2** Grid-Aware Temporal MCDM Charging-Station Siting | *Where* should new chargers be built? | `station_siting/` | GridSite Planner – http://localhost:5182 |
 | **C3** Terrain- and SoC-Aware Route & Charging-Stop Recommendation | *Which* route and stop? | `route_recommendation/` | TerrainRoute – http://localhost:5183 |
 
+## First time on a new computer (Windows)
+
+Double-click **`SETUP_NEW_COMPUTER.bat`** in the project folder. It:
+
+- checks Python 3.11 and Node.js LTS (offers to install them with winget)
+- copies the project to a short folder `C:\J26` if the current path is long (for example an unzipped
+  `...-main\...-main` folder – Windows cannot run Python DLLs or the frontend tools from long paths)
+- creates a separate Python environment for C1, C2 and C3 and installs everything (runs the three setups below)
+
 ## Run a component (Windows)
 
 Needs **Python 3.11** and **Node.js LTS**. In the component's folder, double-click:

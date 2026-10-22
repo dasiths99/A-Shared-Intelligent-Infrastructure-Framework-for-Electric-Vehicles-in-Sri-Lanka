@@ -23,7 +23,15 @@ echo.
 set "PY=python"
 if exist "%COMP%.venv\Scripts\python.exe" set "PY=%COMP%.venv\Scripts\python.exe"
 set "SHORTENV=0"
-for /f %%L in ('powershell -NoProfile -Command "$l=$env:COMP.Length; $lp=(Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -ErrorAction SilentlyContinue).LongPathsEnabled; if (($l -gt 150) -or (($l -gt 120) -and ($lp -ne 1))) {1} else {0}"') do set "SHORTENV=%%L"
+for /f %%L in ('powershell -NoProfile -Command "$l=$env:COMP.Length; $lp=(Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -ErrorAction SilentlyContinue).LongPathsEnabled; if ($l -gt 200) {2} elseif (($l -gt 150) -or (($l -gt 120) -and ($lp -ne 1))) {1} else {0}"') do set "SHORTENV=%%L"
+if "%SHORTENV%"=="2" (
+  echo.
+  echo [ERROR] The project folder path is too long for Windows ^(over 200 characters^).
+  echo         The frontend tools ^(esbuild / Vite^) cannot start from such a long path.
+  echo         Move the project folder to a short place, for example  C:\J26\  ,
+  echo         without a doubled ...-main\...-main folder, then run this file again.
+  pause & exit /b 1
+)
 if "%SHORTENV%"=="1" if exist "%LOCALAPPDATA%\J26\c2-env\Scripts\python.exe" set "PY=%LOCALAPPDATA%\J26\c2-env\Scripts\python.exe"
 
 if "%PY%"=="python" (where python >nul 2>nul || (echo [ERROR] Python not found - run setup_c2.bat first. & pause & exit /b 1))

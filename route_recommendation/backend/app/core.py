@@ -99,7 +99,11 @@ def weather_means() -> pd.DataFrame:
 @lru_cache
 def const_kwh_per_km() -> dict[str, float]:
     """Manufacturer-average consumption from Open EV Data (constant kWh/km baseline)."""
-    d = json.loads((PROJECT / "shared/data/raw/vehicles/open_ev_data.json").read_text(encoding="utf-8"))["data"]
+    raw = PROJECT / "shared/data/raw/vehicles/open_ev_data.json"
+    if not raw.exists():  # raw data is not in git - fresh clones use the cleaned copy
+        s = pd.read_parquet(PROCESSED / "vehicle_specs_openev.parquet").dropna(subset=["kwh_per_100km", "usable_kwh"])
+        return {f"{r.brand} {r.model}|{float(r.usable_kwh)}": r.kwh_per_100km / 100 for r in s.itertuples()}
+    d = json.loads(raw.read_text(encoding="utf-8"))["data"]
     out = {}
     for v in d:
         c = (v.get("energy_consumption") or {}).get("average_consumption")

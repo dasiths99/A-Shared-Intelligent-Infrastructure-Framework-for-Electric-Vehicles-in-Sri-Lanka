@@ -1,20 +1,39 @@
 """Fill vehicle_models from Open EV Data (shared raw file) on first start. BYD etc. are added via the API
-with their brochure as `source` (no invented specs)."""
+with their brochure as `source` (no invented specs). Raw data is not in git, so a fresh clone copies the
+list from the committed c1_seed.db instead."""
 
 import json
+import sqlite3
 
-from .config import PROJECT
+from .config import DB_DIR, PROJECT
 from .db import SessionLocal
 from .models import VehicleModel
 
 OPEN_EV = PROJECT / "shared" / "data" / "raw" / "vehicles" / "open_ev_data.json"
+SEED_DB = DB_DIR / "c1_seed.db"
+
+
+def _from_seed_db(db) -> int:
+    cols = {c.name for c in VehicleModel.__table__.columns}
+    con = sqlite3.connect(f"file:{SEED_DB.as_posix()}?mode=ro", uri=True)
+    con.row_factory = sqlite3.Row
+    try:
+        rows = con.execute("SELECT * FROM vehicle_models").fetchall()
+    finally:
+        con.close()
+    for r in rows:
+        db.add(VehicleModel(**{k: r[k] for k in r.keys() if k in cols}))
+    db.commit()
+    return len(rows)
 
 
 def seed_vehicle_models() -> int:
     db = SessionLocal()
     try:
-        if db.query(VehicleModel).count() > 0 or not OPEN_EV.exists():
+        if db.query(VehicleModel).count() > 0:
             return 0
+        if not OPEN_EV.exists():
+            return _from_seed_db(db) if SEED_DB.exists() else 0
         seen = set()
         for v in json.loads(OPEN_EV.read_text(encoding="utf-8"))["data"]:
             if v.get("type") != "bev" or not v.get("usable_battery_size"):
