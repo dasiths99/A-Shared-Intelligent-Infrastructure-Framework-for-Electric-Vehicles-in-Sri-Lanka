@@ -2,7 +2,7 @@
 REM ==========================================================================
 REM  C2 - GridSite Planner : SETUP (run once, safe to run again)
 REM  Does everything for C2 on this computer and then starts the app:
-REM   - installs Python 3.11 and Node.js if missing (asks first)
+REM   - installs Python and Node.js only if missing (any Python 3.10+ works) (asks first)
 REM   - long project folder path: copies the project to C:\J26 and continues there
 REM   - creates C2's own Python environment (.venv) and installs all libraries
 REM   - registers the notebook kernel, installs the frontend packages
@@ -25,7 +25,7 @@ echo  Project : %ROOT%
 echo  Env     : %ENV%   ^(this part only^)
 echo.
 
-echo [1/7] Checking Python 3.11, Node.js and the project folder ...
+echo [1/7] Checking Python, Node.js and the project folder ...
 if not defined J26_BASE_PY call "%ROOT%\shared\setup_prereqs.bat" || goto fail
 if not defined J26_DEST set "J26_DEST=%ROOT%"
 if /I not "%J26_DEST%"=="%ROOT%" (

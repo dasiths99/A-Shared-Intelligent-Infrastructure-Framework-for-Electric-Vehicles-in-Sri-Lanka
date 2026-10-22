@@ -2,7 +2,7 @@
 REM ==========================================================================
 REM  J26-IT-430 EV framework : SETUP ON A NEW COMPUTER  (run once, safe to run again)
 REM  Sets up ALL three parts and starts their apps:
-REM   1. installs Python 3.11 and Node.js if missing (asks first)
+REM   1. installs Python and Node.js only if missing (any Python 3.10+ works) (asks first)
 REM   2. long project folder path (e.g. unzipped "...-main\...-main"): copies the
 REM      project to C:\J26 - Windows cannot run Python DLLs / esbuild from long paths
 REM   3. runs setup_c1.bat, setup_c2.bat, setup_c3.bat - each part gets its own
@@ -15,7 +15,7 @@ title J26 - setup on a new computer
 echo.
 echo  === J26-IT-430 EV framework - setup on a new computer ===
 echo.
-echo [1/3] Checking Python 3.11, Node.js and the project folder ...
+echo [1/3] Checking Python, Node.js and the project folder ...
 call "%~dp0shared\setup_prereqs.bat" || goto fail
 set "DEST=%J26_DEST%"
 

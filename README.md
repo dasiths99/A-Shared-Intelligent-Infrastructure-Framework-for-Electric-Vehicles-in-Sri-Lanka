@@ -14,7 +14,8 @@ separately for now, each with its own data pipeline, models, backend, database a
 Double-click **`SETUP_NEW_COMPUTER.bat`** in the project folder (all three parts), or only one part's
 `setup_c1.bat` / `setup_c2.bat` / `setup_c3.bat`. Each setup does everything by itself:
 
-- installs **Python 3.11** and **Node.js LTS** if they are missing (asks first, uses winget)
+- uses the Python already installed (any **3.10 or newer**; 3.11 is preferred if present) and Node.js;
+  installs them only if they are missing (asks first, uses winget)
 - copies the project to a short folder `C:\J26` if the current path is long (for example an unzipped
   `...-main\...-main` folder – Windows cannot run Python DLLs or the frontend tools from long paths)
 - creates the part's own Python environment (`.venv`), installs its `requirements.txt` and frontend packages,
