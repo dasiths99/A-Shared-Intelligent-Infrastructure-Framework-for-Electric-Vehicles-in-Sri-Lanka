@@ -26,7 +26,12 @@ echo  Env     : %ENV%   ^(this part only^)
 echo.
 
 echo [1/7] Checking Python, Node.js and the project folder ...
-if not defined J26_BASE_PY call "%ROOT%\shared\setup_prereqs.bat" || goto fail
+if not exist "%ROOT%\shared\config.py" (
+  echo [ERROR] %ROOT%\shared\config.py is missing - C1 needs the shared folder.
+  echo         Copy the WHOLE project folder ^(not only charging_scheduling^) and run this file again.
+  goto fail
+)
+if not defined J26_BASE_PY call :prereqs || goto fail
 if not defined J26_DEST set "J26_DEST=%ROOT%"
 if /I not "%J26_DEST%"=="%ROOT%" (
   echo       Continuing in the short project folder %J26_DEST% ...
@@ -86,3 +91,63 @@ echo.
 echo  C1 setup did NOT finish - read the message above.
 if /I not "%~1"=="nopause" pause
 exit /b 1
+
+REM ==========================================================================
+REM  :prereqs - Python, Node.js and a short project folder. The same block is in every
+REM  setup file, so each one works on its own. Sets J26_BASE_PY and J26_DEST.
+REM  - uses any installed Python 3.10+ (3.11 preferred); installs Python / Node.js LTS
+REM    with winget only if missing (asks first)
+REM  - long project path (e.g. unzipped "...-main\...-main"): copies the project to C:\J26,
+REM    because Windows cannot load Python DLLs or start the frontend tools (esbuild) from it
+REM ==========================================================================
+:prereqs
+set "J26_SRC=%ROOT%"
+REM ---- Python: any installed Python 3.10 or newer (3.11 preferred if present - the version the project was built with) ----
+set "J26_BASE_PY="
+set "J26_PYCHK=import sys; assert sys.version_info >= (3, 10); print(sys.executable)"
+for /f "delims=" %%P in ('py -3.11 -c "%J26_PYCHK%" 2^>nul') do set "J26_BASE_PY=%%P"
+if not defined J26_BASE_PY for /f "delims=" %%P in ('py -3 -c "%J26_PYCHK%" 2^>nul') do set "J26_BASE_PY=%%P"
+if not defined J26_BASE_PY for /f "delims=" %%P in ('python -c "%J26_PYCHK%" 2^>nul') do set "J26_BASE_PY=%%P"
+if defined J26_BASE_PY goto python_ok
+echo       No Python found ^(3.10 or newer is needed^).
+where winget >nul 2>nul || (echo [ERROR] Install Python from https://www.python.org/downloads/ and run this file again. & exit /b 1)
+choice /C YN /M "      Install Python now"
+if errorlevel 2 (echo [ERROR] Python is needed. & exit /b 1)
+winget install -e --id Python.Python.3.11 --scope user --accept-package-agreements --accept-source-agreements
+if exist "%LOCALAPPDATA%\Programs\Python\Python311\python.exe" set "J26_BASE_PY=%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+if not defined J26_BASE_PY (echo [ERROR] Python install failed - install it from python.org and run this file again. & exit /b 1)
+:python_ok
+"%J26_BASE_PY%" -c "import sys, platform; print('      Python ' + platform.python_version() + ': ' + sys.executable)"
+
+REM ---- Node.js ----
+where npm >nul 2>nul && goto node_ok
+if exist "%ProgramFiles%\nodejs\npm.cmd" (set "PATH=%ProgramFiles%\nodejs;%PATH%" & goto node_ok)
+echo       Node.js not found - needed for the web apps.
+where winget >nul 2>nul || (echo [ERROR] Install Node.js LTS from https://nodejs.org and run this file again. & exit /b 1)
+choice /C YN /M "      Install Node.js LTS now"
+if errorlevel 2 (echo [ERROR] Node.js is needed. & exit /b 1)
+winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements
+set "PATH=%ProgramFiles%\nodejs;%PATH%"
+where npm >nul 2>nul || (echo [ERROR] Node.js install failed - install it from nodejs.org and run this file again. & exit /b 1)
+:node_ok
+echo       Node.js: OK
+
+REM ---- project folder path ----
+set "J26_DEST=%J26_SRC%"
+set "J26_PLEN=0"
+for /f %%L in ('powershell -NoProfile -Command "$env:J26_SRC.Length"') do set "J26_PLEN=%%L"
+if %J26_PLEN% LEQ 130 (
+  echo       Project folder: OK ^(%J26_PLEN% characters^)
+  exit /b 0
+)
+echo       Project folder path is long ^(%J26_PLEN% characters^) - Windows cannot run Python and frontend files from it.
+set "J26_DEST=C:\J26"
+if exist "%J26_DEST%\" if not exist "%J26_DEST%\station_siting\setup_c2.bat" set "J26_DEST=%USERPROFILE%\J26"
+if not exist "%J26_DEST%\" mkdir "%J26_DEST%" 2>nul || set "J26_DEST=%USERPROFILE%\J26"
+if not exist "%J26_DEST%\" mkdir "%J26_DEST%" || (echo [ERROR] could not create %J26_DEST% & exit /b 1)
+echo       Copying the project to %J26_DEST% ...
+REM /XO keeps newer files already in the copy; c1.db (user accounts) is never overwritten
+robocopy "%J26_SRC%" "%J26_DEST%" /E /XO /XD .venv node_modules __pycache__ .pytest_cache .ipynb_checkpoints /XF c1.db /R:1 /W:1 /NFL /NDL /NJH /NJS /NP >nul
+if errorlevel 8 (echo [ERROR] copying to %J26_DEST% failed & exit /b 1)
+echo       Copied. IMPORTANT: use the project in %J26_DEST% from now on.
+exit /b 0
