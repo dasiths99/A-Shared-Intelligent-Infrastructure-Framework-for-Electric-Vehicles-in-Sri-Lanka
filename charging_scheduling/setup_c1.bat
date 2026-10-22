@@ -1,9 +1,15 @@
 @echo off
 REM ==========================================================================
-REM  C1 - Smart Charge LK : ENVIRONMENT SETUP (run once, safe to run again)
-REM  Creates C1's own Python 3.11 environment, installs libraries, registers the
-REM  notebook kernel, installs frontend packages, prepares data/models if missing,
-REM  and runs the C1 tests.  Afterwards start the app with run_c1.bat.
+REM  C1 - Smart Charge LK : SETUP (run once, safe to run again)
+REM  Does everything for C1 on this computer and then starts the app:
+REM   - installs Python 3.11 and Node.js if missing (asks first)
+REM   - long project folder path: copies the project to C:\J26 and continues there
+REM   - creates C1's own Python environment (.venv) and installs all libraries
+REM   - registers the notebook kernel, installs the frontend packages
+REM   - prepares data / models / database if missing, runs the C1 tests
+REM   - starts backend + frontend (run_c1.bat) and opens the browser
+REM  Arguments: nopause   = no pause and no app start (used by SETUP_NEW_COMPUTER.bat)
+REM             nobrowser = start the app without opening the browser
 REM ==========================================================================
 setlocal
 title C1 Smart Charge LK - environment setup
@@ -19,33 +25,15 @@ echo  Project : %ROOT%
 echo  Env     : %ENV%   ^(this part only^)
 echo.
 
-echo [1/7] Checking Python 3.11 and Node.js ...
-set "BASE="
-if defined J26_BASE_PY set BASE="%J26_BASE_PY%"
-if not defined BASE (py -3.11 -c "import sys" >nul 2>nul && set "BASE=py -3.11")
-if not defined BASE (python -c "import sys; assert sys.version_info >= (3, 10)" >nul 2>nul && set "BASE=python")
-if not defined BASE (echo [ERROR] Python 3.11 not found. Install it from python.org. & goto fail)
-where npm >nul 2>nul || (echo [ERROR] Node.js / npm not found. Install Node.js LTS. & goto fail)
-echo       Python: %BASE%   Node: OK
-
-REM Long project folder (e.g. unzipped "...-main\...-main") pushes DLL paths inside .venv over the
-REM Windows 260-character limit ("DLL load failed ... filename too long"): path > 150 chars, or > 120 chars when
-REM Windows long-path support is off. Then use a short path instead.
-set "SHORTENV=0"
-for /f %%L in ('powershell -NoProfile -Command "$l=$env:COMP.Length; $lp=(Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -ErrorAction SilentlyContinue).LongPathsEnabled; if ($l -gt 200) {2} elseif (($l -gt 150) -or (($l -gt 120) -and ($lp -ne 1))) {1} else {0}"') do set "SHORTENV=%%L"
-if "%SHORTENV%"=="2" (
-  echo.
-  echo [ERROR] The project folder path is too long for Windows ^(over 200 characters^).
-  echo         The frontend tools ^(esbuild / Vite^) cannot start from such a long path.
-  echo         Move the project folder to a short place, for example  C:\J26\  ,
-  echo         without a doubled ...-main\...-main folder, then run this file again.
-  goto fail
+echo [1/7] Checking Python 3.11, Node.js and the project folder ...
+if not defined J26_BASE_PY call "%ROOT%\shared\setup_prereqs.bat" || goto fail
+if not defined J26_DEST set "J26_DEST=%ROOT%"
+if /I not "%J26_DEST%"=="%ROOT%" (
+  echo       Continuing in the short project folder %J26_DEST% ...
+  call "%J26_DEST%\charging_scheduling\setup_c1.bat" %*
+  exit /b
 )
-if "%SHORTENV%"=="1" (
-  set "ENV=%LOCALAPPDATA%\J26\c1-env"
-  set "PY=%LOCALAPPDATA%\J26\c1-env\Scripts\python.exe"
-  echo       Project path too long for Windows DLL loading - using short environment path %LOCALAPPDATA%\J26\c1-env
-)
+set BASE="%J26_BASE_PY%"
 
 echo [2/7] Creating C1 Python environment ...
 if not exist "%PY%" (
@@ -86,9 +74,11 @@ pushd "%ROOT%"
 popd
 
 echo.
-echo  C1 environment is READY.  Start the app with run_c1.bat
+echo  C1 environment is READY.
+if /I "%~1"=="nopause" exit /b 0
+echo  Starting the C1 Smart Charge LK app ...
 echo.
-if /I not "%~1"=="nopause" pause
+call "%COMP%run_c1.bat" %*
 exit /b 0
 
 :fail

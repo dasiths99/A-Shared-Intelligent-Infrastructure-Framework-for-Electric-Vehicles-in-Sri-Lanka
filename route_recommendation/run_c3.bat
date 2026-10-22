@@ -67,7 +67,7 @@ set /a TRIES=0
 :wait
 set /a TRIES+=1
 curl -s -o nul -f "%HEALTH%" && goto ready
-if %TRIES% GEQ 90 (echo [WARN] Not ready after 90 s - check the two server windows. & pause & exit /b 1)
+if %TRIES% GEQ 180 (echo [WARN] Not ready after 180 s - check the two server windows. & pause & exit /b 1)
 timeout /t 1 /nobreak >nul
 goto wait
 

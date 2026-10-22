@@ -36,7 +36,7 @@ if "%SHORTENV%"=="1" if exist "%LOCALAPPDATA%\J26\c2-env\Scripts\python.exe" set
 
 if "%PY%"=="python" (where python >nul 2>nul || (echo [ERROR] Python not found - run setup_c2.bat first. & pause & exit /b 1))
 where npm >nul 2>nul || (echo [ERROR] Node.js / npm not found. Install Node.js. & pause & exit /b 1)
-"%PY%" -c "import fastapi, uvicorn, sqlalchemy, xgboost" >nul 2>nul || (
+"%PY%" -c "import fastapi, uvicorn, sqlalchemy, scipy" >nul 2>nul || (
   echo Installing backend requirements...
   "%PY%" -m pip install -r "%ROOT%\backend-requirements.txt" || (echo [ERROR] pip install failed & pause & exit /b 1)
 )

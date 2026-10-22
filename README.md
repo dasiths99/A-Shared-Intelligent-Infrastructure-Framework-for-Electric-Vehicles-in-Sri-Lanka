@@ -11,19 +11,21 @@ separately for now, each with its own data pipeline, models, backend, database a
 
 ## First time on a new computer (Windows)
 
-Double-click **`SETUP_NEW_COMPUTER.bat`** in the project folder. It:
+Double-click **`SETUP_NEW_COMPUTER.bat`** in the project folder (all three parts), or only one part's
+`setup_c1.bat` / `setup_c2.bat` / `setup_c3.bat`. Each setup does everything by itself:
 
-- checks Python 3.11 and Node.js LTS (offers to install them with winget)
+- installs **Python 3.11** and **Node.js LTS** if they are missing (asks first, uses winget)
 - copies the project to a short folder `C:\J26` if the current path is long (for example an unzipped
   `...-main\...-main` folder – Windows cannot run Python DLLs or the frontend tools from long paths)
-- creates a separate Python environment for C1, C2 and C3 and installs everything (runs the three setups below)
+- creates the part's own Python environment (`.venv`), installs its `requirements.txt` and frontend packages,
+  registers the notebook kernel, prepares missing data/models/database, runs the tests
+- starts the app and opens the browser
 
 ## Run a component (Windows)
 
-Needs **Python 3.11** and **Node.js LTS**. In the component's folder, double-click:
+In the component's folder, double-click:
 
-1. `setup_c1.bat` / `setup_c2.bat` / `setup_c3.bat` – once: creates that part's own `.venv`, installs its
-   `requirements.txt` and frontend packages, registers the notebook kernel, prepares missing data/models/database, runs the tests
+1. `setup_cX.bat` – first time only (see above)
 2. `run_cX.bat` – starts backend + frontend and opens the browser
 3. `stop_cX.bat` – stops it
 
