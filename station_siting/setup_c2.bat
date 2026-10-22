@@ -35,6 +35,7 @@ if /I not "%J26_DEST%"=="%ROOT%" (
 )
 set BASE="%J26_BASE_PY%"
 
+:make_env
 echo [2/7] Creating C2 Python environment ...
 REM An environment copied from another computer points to that computer's Python - make a new one
 if exist "%PY%" (
@@ -49,7 +50,20 @@ if not exist "%PY%" (
 
 echo [3/7] Installing C2 libraries incl. geo stack (station_siting\requirements.txt) ...
 "%PY%" -m pip install --upgrade pip -q || goto fail
-"%PY%" -m pip install -r "%COMP%requirements.txt" -q || (echo [ERROR] pip install failed & goto fail)
+"%PY%" -m pip install -r "%COMP%requirements.txt" -q || (echo       pip install failed & goto libs_bad)
+REM Check the libraries really load with this Python (a very new Python can break them)
+"%PY%" -c "import fastapi, pydantic, sqlalchemy, pandas, numpy, scipy" 2>"%TEMP%\j26_libcheck.txt" && goto libs_ok
+:libs_bad
+echo       The libraries do not work with this Python version:
+"%PY%" --version
+powershell -NoProfile -Command "Get-Content $env:TEMP\j26_libcheck.txt -Tail 1"
+if defined J26_RETRIED goto fail
+set "J26_RETRIED=1"
+echo       Switching C2 to Python 3.11 ^(the version the project was built with^) ...
+call :python311 || goto fail
+rmdir /s /q "%ENV%"
+goto make_env
+:libs_ok
 
 echo [4/7] Registering notebook kernel "Python (J26 C2)" ...
 "%PY%" -m ipykernel install --user --name j26-c2 --display-name "Python (J26 C2)" >nul || goto fail
@@ -166,4 +180,25 @@ REM /XO keeps newer files already in the copy; c1.db (user accounts) is never ov
 robocopy "%J26_SRC%" "%J26_DEST%" /E /XO /XD .venv node_modules __pycache__ .pytest_cache .ipynb_checkpoints /XF c1.db /R:1 /W:1 /NFL /NDL /NJH /NJS /NP >nul
 if errorlevel 8 (echo [ERROR] copying to %J26_DEST% failed & exit /b 1)
 echo       Copied. IMPORTANT: use the project in %J26_DEST% from now on.
+exit /b 0
+
+REM ==========================================================================
+REM  :python311 - used when the libraries do not work with the installed Python version
+REM  (e.g. a very new or early release). Finds or installs Python 3.11, the version the
+REM  project was built and tested with.
+REM ==========================================================================
+:python311
+set "J26_BASE_PY="
+for /f "delims=" %%P in ('py -3.11 -c "import sys; print(sys.executable)" 2^>nul') do set "J26_BASE_PY=%%P"
+if not defined J26_BASE_PY if exist "%LOCALAPPDATA%\Programs\Python\Python311\python.exe" set "J26_BASE_PY=%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+if defined J26_BASE_PY goto py311_ok
+where winget >nul 2>nul || (echo [ERROR] Install Python 3.11 from https://www.python.org/downloads/release/python-3119/ and run this file again. & exit /b 1)
+choice /C YN /M "      Install Python 3.11 now"
+if errorlevel 2 (echo [ERROR] Python 3.11 is needed on this computer. & exit /b 1)
+winget install -e --id Python.Python.3.11 --scope user --accept-package-agreements --accept-source-agreements
+if exist "%LOCALAPPDATA%\Programs\Python\Python311\python.exe" set "J26_BASE_PY=%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+if not defined J26_BASE_PY (echo [ERROR] Python 3.11 install failed - install it from python.org and run this file again. & exit /b 1)
+:py311_ok
+set BASE="%J26_BASE_PY%"
+echo       Python 3.11: %J26_BASE_PY%
 exit /b 0
