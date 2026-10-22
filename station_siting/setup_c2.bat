@@ -36,6 +36,13 @@ if /I not "%J26_DEST%"=="%ROOT%" (
 set BASE="%J26_BASE_PY%"
 
 echo [2/7] Creating C2 Python environment ...
+REM An environment copied from another computer points to that computer's Python - make a new one
+if exist "%PY%" (
+  "%PY%" -c "import sys" >nul 2>nul || (
+    echo       existing environment does not work on this computer ^(copied from another computer?^) - creating it again ...
+    rmdir /s /q "%ENV%"
+  )
+)
 if not exist "%PY%" (
   %BASE% -m venv "%ENV%" || (echo [ERROR] could not create the environment & goto fail)
 ) else (echo       already exists)

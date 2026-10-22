@@ -35,6 +35,7 @@ if "%SHORTENV%"=="2" (
 if "%SHORTENV%"=="1" if exist "%LOCALAPPDATA%\J26\c3-env\Scripts\python.exe" set "PY=%LOCALAPPDATA%\J26\c3-env\Scripts\python.exe"
 
 if "%PY%"=="python" (where python >nul 2>nul || (echo [ERROR] Python not found - run setup_c3.bat first. & pause & exit /b 1))
+"%PY%" -c "import sys" >nul 2>nul || (echo [ERROR] The Python environment does not work on this computer ^(copied from another computer?^) - run setup_c3.bat first. & pause & exit /b 1)
 where npm >nul 2>nul || (echo [ERROR] Node.js / npm not found. Install Node.js. & pause & exit /b 1)
 "%PY%" -c "import fastapi, uvicorn, sqlalchemy, xgboost" >nul 2>nul || (
   echo Installing backend requirements...
