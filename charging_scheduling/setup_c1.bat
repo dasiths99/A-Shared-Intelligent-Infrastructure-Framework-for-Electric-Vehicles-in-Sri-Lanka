@@ -95,7 +95,8 @@ exit /b 1
 REM ==========================================================================
 REM  :prereqs - Python, Node.js and a short project folder. The same block is in every
 REM  setup file, so each one works on its own. Sets J26_BASE_PY and J26_DEST.
-REM  - uses any installed Python 3.10+ (3.11 preferred); installs Python / Node.js LTS
+REM  - uses any installed Python 3.10+ (3.11 preferred); installs Python / Node.js LTS /
+REM    Visual C++ runtime (for XGBoost)
 REM    with winget only if missing (asks first)
 REM  - long project path (e.g. unzipped "...-main\...-main"): copies the project to C:\J26,
 REM    because Windows cannot load Python DLLs or start the frontend tools (esbuild) from it
@@ -131,6 +132,19 @@ set "PATH=%ProgramFiles%\nodejs;%PATH%"
 where npm >nul 2>nul || (echo [ERROR] Node.js install failed - install it from nodejs.org and run this file again. & exit /b 1)
 :node_ok
 echo       Node.js: OK
+
+REM ---- Microsoft Visual C++ runtime: XGBoost needs vcomp140.dll, which a new Windows may not have ----
+if exist "%WINDIR%\System32\vcomp140.dll" goto vcrt_ok
+echo       Microsoft Visual C++ runtime not found - needed by the XGBoost models.
+choice /C YN /M "      Install it now"
+if errorlevel 2 (echo [ERROR] Install it from https://aka.ms/vs/17/release/vc_redist.x64.exe and run this file again. & exit /b 1)
+where winget >nul 2>nul && winget install -e --id Microsoft.VCRedist.2015+.x64 --accept-package-agreements --accept-source-agreements
+if exist "%WINDIR%\System32\vcomp140.dll" goto vcrt_ok
+echo       Downloading the installer from Microsoft ...
+curl -L -s -o "%TEMP%\vc_redist.x64.exe" https://aka.ms/vs/17/release/vc_redist.x64.exe && "%TEMP%\vc_redist.x64.exe" /install /passive /norestart
+if not exist "%WINDIR%\System32\vcomp140.dll" (echo [ERROR] Install it from https://aka.ms/vs/17/release/vc_redist.x64.exe and run this file again. & exit /b 1)
+:vcrt_ok
+echo       Visual C++ runtime: OK
 
 REM ---- project folder path ----
 set "J26_DEST=%J26_SRC%"
